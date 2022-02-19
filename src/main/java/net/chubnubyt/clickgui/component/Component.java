@@ -18,6 +18,8 @@ public abstract class Component
 
 	public abstract void render(MatrixStack matrices, int mouseX, int mouseY, float delta);
 
+	public abstract void onMouseClicked(double mouseX, double mouseY, int button);
+
 	public double getX()
 	{
 		return x;

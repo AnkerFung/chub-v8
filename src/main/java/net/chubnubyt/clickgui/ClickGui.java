@@ -2,7 +2,7 @@ package net.chubnubyt.clickgui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.chubnubyt.ChubClient;
-import net.chubnubyt.clickgui.component.FeatureButtonComponent;
+import net.chubnubyt.clickgui.component.ButtonComponent;
 import net.chubnubyt.clickgui.window.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -22,10 +22,10 @@ public class ClickGui
 	public void init()
 	{
 		Window window = new Window(this, 10, 10, 100, 100);
-		window.addComponent(new FeatureButtonComponent(window, new LiteralText("aaa"), 10, 10));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), () -> {}, 10, 10));
 		windows.add(window);
 		window = new Window(this, 10, 10, 100, 100);
-		window.addComponent(new FeatureButtonComponent(window, new LiteralText("aaa"), 10, 10));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), () -> {}, 10, 10));
 		windows.add(window);
 	}
 
@@ -53,7 +53,7 @@ public class ClickGui
 		int clickedWindowIndex = -1;
 		for (int i = windows.size() - 1; i >= 0; i--)
 		{
-			if (windows.get(i).isHoveringOver(mouseX, mouseY))
+			if (windows.get(i).isHoveringOver(mouseX - globalShiftX, mouseY - globalShiftY))
 			{
 				clickedWindowIndex = i;
 				break;
@@ -64,6 +64,11 @@ public class ClickGui
 			return;
 
 		Window clickedWindow = windows.get(clickedWindowIndex);
+
+		if (clickedWindow == getTopWindow())
+		{
+			clickedWindow.onMouseClicked(mouseX - globalShiftX, mouseY - globalShiftY, button);
+		}
 
 		if (clickedWindow.canDrag(mouseX - globalShiftX, mouseY - globalShiftY))
 			draggingWindow = clickedWindow;

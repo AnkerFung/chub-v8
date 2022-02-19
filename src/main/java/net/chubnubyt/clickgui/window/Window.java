@@ -52,6 +52,14 @@ public class Window
 		}
 	}
 
+	public void onMouseClicked(double mouseX, double mouseY, int button)
+	{
+		for (Component component : components)
+		{
+			component.onMouseClicked(mouseX, mouseY, button);
+		}
+	}
+
 	public boolean canDrag(double mouseX, double mouseY)
 	{
 		if (!draggable)

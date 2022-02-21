@@ -22,10 +22,16 @@ public class ClickGui
 	public void init()
 	{
 		Window window = new Window(this, 10, 10, 100, 100);
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), () -> {}, 10, 10));
+		Runnable action = () -> System.out.println("clicked");
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 20));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 40));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 60));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 80));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 100));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 120));
 		windows.add(window);
 		window = new Window(this, 10, 10, 100, 100);
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), () -> {}, 10, 10));
+		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 20));
 		windows.add(window);
 	}
 
@@ -33,23 +39,21 @@ public class ClickGui
 	{
 		matrices.push();
 		matrices.translate(globalShiftX, globalShiftY, 0);
-		GL11.glDisable(GL11.GL_CULL_FACE);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		RenderSystem.lineWidth(1);
 		for (Window window : windows)
 		{
+			GL11.glDisable(GL11.GL_CULL_FACE);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.lineWidth(1);
 			window.render(matrices, (int) (mouseX - globalShiftX), (int) (mouseY - globalShiftY), delta);
+			GL11.glEnable(GL11.GL_CULL_FACE);
+			GL11.glDisable(GL11.GL_BLEND);
 		}
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glDisable(GL11.GL_BLEND);
 		matrices.pop();
 	}
 
 	public void handleMouseClicked(double mouseX, double mouseY, int button)
 	{
-		if (button != GLFW.GLFW_MOUSE_BUTTON_1)
-			return;
 		int clickedWindowIndex = -1;
 		for (int i = windows.size() - 1; i >= 0; i--)
 		{
@@ -70,6 +74,11 @@ public class ClickGui
 			clickedWindow.onMouseClicked(mouseX - globalShiftX, mouseY - globalShiftY, button);
 		}
 
+		if (button != GLFW.GLFW_MOUSE_BUTTON_1)
+			return;
+		if (!windows.contains(clickedWindow))
+			return;
+
 		if (clickedWindow.canDrag(mouseX - globalShiftX, mouseY - globalShiftY))
 			draggingWindow = clickedWindow;
 
@@ -85,11 +94,16 @@ public class ClickGui
 
 	public void handleMouseScrolled(double mouseX, double mouseY, double amount)
 	{
-
+		Window top = getTopWindow();
+		if (top == null)
+			return;
+		top.onMouseScrolled(mouseX, mouseY, amount);
 	}
 
 	public void handleMouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
 	{
+		if (button != GLFW.GLFW_MOUSE_BUTTON_1)
+			return;
 		if (GLFW.glfwGetKey(ChubClient.MC.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT_CONTROL) == GLFW.GLFW_PRESS)
 		{
 			globalShiftX += deltaX;
@@ -98,11 +112,8 @@ public class ClickGui
 		}
 		if (draggingWindow != null)
 		{
-			if (button == GLFW.GLFW_MOUSE_BUTTON_1)
-			{
-				draggingWindow.setX(draggingWindow.getX() + deltaX);
-				draggingWindow.setY(draggingWindow.getY() + deltaY);
-			}
+			draggingWindow.setX(draggingWindow.getX() + deltaX);
+			draggingWindow.setY(draggingWindow.getY() + deltaY);
 		}
 	}
 
@@ -112,5 +123,10 @@ public class ClickGui
 		if (size == 0)
 			return null;
 		return windows.get(size - 1);
+	}
+
+	public void close(Window window)
+	{
+		windows.remove(window);
 	}
 }

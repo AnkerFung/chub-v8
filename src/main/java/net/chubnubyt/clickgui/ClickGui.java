@@ -4,8 +4,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.chubnubyt.ChubClient;
 import net.chubnubyt.clickgui.component.ButtonComponent;
 import net.chubnubyt.clickgui.window.Window;
+import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -18,6 +21,8 @@ public class ClickGui
 	private Window draggingWindow = null;
 	private double globalShiftX = 0;
 	private double globalShiftY = 0;
+
+	private static final Identifier chubLogo = new Identifier("chub", "logo.png");
 
 	public void init()
 	{
@@ -37,6 +42,7 @@ public class ClickGui
 
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
 	{
+		renderLogo(matrices);
 		matrices.push();
 		matrices.translate(globalShiftX, globalShiftY, 0);
 		for (Window window : windows)
@@ -128,5 +134,18 @@ public class ClickGui
 	public void close(Window window)
 	{
 		windows.remove(window);
+	}
+
+	private void renderLogo(MatrixStack matrices)
+	{
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.setShaderColor(1, 1, 1, 1);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, chubLogo);
+		DrawableHelper.drawTexture(matrices, 0, 3, 0, 0, 800, 600, 800, 600);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 }

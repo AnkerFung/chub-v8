@@ -27,11 +27,11 @@ public class TextRendererMixin implements ITextRenderer
 	}
 
 	@Override
-	public void drawTrimmed(StringVisitable text, int x, int y, int maxWidth, int color, Matrix4f matrix)
+	public void drawTrimmed(StringVisitable text, float x, float y, int maxWidth, int color, Matrix4f matrix)
 	{
 		for(Iterator var7 = this.wrapLines(text, maxWidth).iterator(); var7.hasNext(); y += 9) {
 			OrderedText orderedText = (OrderedText)var7.next();
-			this.draw(orderedText, (float)x, (float)y, color, matrix, false);
+			this.draw(orderedText, x, y, color, matrix, false);
 		}
 	}
 }

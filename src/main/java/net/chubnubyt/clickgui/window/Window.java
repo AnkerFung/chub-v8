@@ -80,7 +80,7 @@ public class Window
 			GL11.glEnable(GL11.GL_BLEND);
 			RenderSystem.setShader(GameRenderer::getPositionShader);
 			RenderSystem.setShaderColor(1.0f, 0.2f, 0.2f, 1.0f);
-			double x = getX() + length - 10;
+			double x = getX() + width - 10;
 			double y = getY();
 			RenderUtil.drawQuad(x, y, x + 10, y + 10, matrices);
 			TextRenderer textRenderer = ChubClient.MC.textRenderer;
@@ -94,7 +94,7 @@ public class Window
 			GL11.glEnable(GL11.GL_BLEND);
 			RenderSystem.setShader(GameRenderer::getPositionShader);
 			RenderSystem.setShaderColor(1.0f, 0.2f, 0.2f, 1.0f);
-			double x = getX() + length - 25;
+			double x = getX() + width - 25;
 			double y = getY();
 			RenderUtil.drawQuad(x, y, x + 10, y + 10, matrices);
 			TextRenderer textRenderer = ChubClient.MC.textRenderer;
@@ -110,14 +110,14 @@ public class Window
 		{
 			if (closable)
 			{
-				double x = getX() + length - 10;
+				double x = getX() + width - 10;
 				double y = getY();
 				if (RenderUtil.isHoveringOver(mouseX, mouseY, x, y, x + 10, y + 10))
 					parent.close(this);
 			}
 			if (minimizable)
 			{
-				double x = getX() + length - 25;
+				double x = getX() + width - 25;
 				double y = getY();
 				if (RenderUtil.isHoveringOver(mouseX, mouseY, x, y, x + 10, y + 10))
 					minimized = !minimized;

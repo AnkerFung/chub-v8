@@ -53,10 +53,10 @@ public class ButtonComponent extends Component
 		if (parent == parent.parent.getTopWindow() && RenderUtil.isHoveringOver(mouseX, mouseY, x, y, x2, y2))
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderUtil.drawQuad(x, y, x2, y2, matrices);
-		int textX = (int) (x + 5);
-		int textY = (int) y;
+		double textX = x + 5;
+		double textY = y;
 		ITextRenderer textRenderer = (ITextRenderer) ChubClient.MC.textRenderer;
-		textRenderer.drawTrimmed(textSupplier.get(), textX, textY, (int) x2 - textX, 0x0, matrices.peek().getModel());
+		textRenderer.drawTrimmed(textSupplier.get(), (float) textX, (float) textY, (int) (x2 - textX), 0x0, matrices.peek().getModel());
 	}
 
 	@Override

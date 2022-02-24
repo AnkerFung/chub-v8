@@ -5,5 +5,5 @@ import net.minecraft.util.math.Matrix4f;
 
 public interface ITextRenderer
 {
-	void drawTrimmed(StringVisitable text, int x, int y, int maxWidth, int color, Matrix4f matrix);
+	void drawTrimmed(StringVisitable text, float x, float y, int maxWidth, int color, Matrix4f matrix);
 }

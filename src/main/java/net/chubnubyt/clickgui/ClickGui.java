@@ -26,23 +26,53 @@ public class ClickGui
 
 	public void init()
 	{
-		Window window = new Window(this, 10, 10, 100, 100);
+		Window window = new Window(this, 100, 100, 100, 400);
 		Runnable action = () -> System.out.println("clicked");
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 20));
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 40));
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 60));
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 80));
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 100));
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 120));
-		windows.add(window);
-		window = new Window(this, 10, 10, 100, 100);
-		window.addComponent(new ButtonComponent(window, new LiteralText("aaa"), action, 10, 20));
+		String[] names =
+				{
+						"oolfa moment",
+						"anti ddos",
+						"ping bypass",
+						"consent bypass",
+						"auto barrage",
+						"anti dtap",
+						"auto cope",
+						"auto gF",
+						"minehut crasher",
+						"pinger",
+						"anti pop",
+						"auto strafe",
+						"auto ddos",
+						"rblxnoob bypass",
+						"marlow bypass",
+						"notablenoah bypass",
+						"screenshare bypass",
+						"anti screenshare",
+						"pot macro",
+						"safe anchor macro",
+						"femboy detector",
+						"pp macro",
+						"pedo mode",
+						"middle click gap",
+						"protonblitz totem",
+						"auto run",
+						"auto drain",
+						"robux dupe"
+				};
+
+		double y = 20;
+		for (String name : names)
+		{
+			window.addComponent(new ButtonComponent(window, new LiteralText(name), action, 10, (int) y));
+			y += 20;
+		}
+
 		windows.add(window);
 	}
 
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
 	{
-		renderLogo(matrices);
+		//renderLogo(matrices);
 		matrices.push();
 		matrices.translate(globalShiftX, globalShiftY, 0);
 		for (Window window : windows)
@@ -136,7 +166,7 @@ public class ClickGui
 		windows.remove(window);
 	}
 
-	private void renderLogo(MatrixStack matrices)
+	public void renderLogo(MatrixStack matrices)
 	{
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -144,7 +174,7 @@ public class ClickGui
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, chubLogo);
-		DrawableHelper.drawTexture(matrices, 0, 3, 0, 0, 800, 600, 800, 600);
+		DrawableHelper.drawTexture(matrices, 0, 3, 0, 0, 80, 60, 80, 60);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
